@@ -6,7 +6,9 @@ class Finance::CategoriesController < ApplicationController
         category = current_user.categories.build(category_params)
 
         if category.save
-            render json: Finance::CategorySerializer.new(category).serializable_hash[:data][:attributes], status: :created
+            render json: Finance::CategorySerializer.new(
+                category.reload
+            ).serializable_hash[:data][:attributes], status: :created
         else
             render json: category.errors, status: :unprocessable_entity
         end

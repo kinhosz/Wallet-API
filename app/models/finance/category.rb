@@ -5,4 +5,6 @@ class Finance::Category < ApplicationRecord
     validates :name, :category_type, :user_id, presence: true
 
     belongs_to :user
+
+    has_many :finance_transactions, class_name: "Finance::Transaction", dependent: :destroy
 end

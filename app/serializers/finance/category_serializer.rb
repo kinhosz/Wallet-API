@@ -1,4 +1,5 @@
 class Finance::CategorySerializer
   include JSONAPI::Serializer
-  attributes :name, :description, :is_recurring, :category_type
+  attributes :name, :description, :is_recurring,
+    :category_type, :uuid
 end

@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_29_200244) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_01_175243) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "finance_categories", force: :cascade do |t|
@@ -22,7 +23,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_200244) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
     t.index ["user_id"], name: "index_finance_categories_on_user_id"
+  end
+
+  create_table "finance_transactions", force: :cascade do |t|
+    t.text "description", default: "", null: false
+    t.date "occurred_at", null: false
+    t.decimal "value", null: false
+    t.bigint "finance_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["finance_category_id"], name: "index_finance_transactions_on_finance_category_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,4 +53,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_200244) do
   end
 
   add_foreign_key "finance_categories", "users"
+  add_foreign_key "finance_transactions", "finance_categories"
 end

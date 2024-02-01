@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   namespace :finance do
+    resources :transactions, only: [:create]
     resources :categories, only: [:create]
   end
 end
