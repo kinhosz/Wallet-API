@@ -3,7 +3,7 @@ class Finance::CategoriesController < ApplicationController
     respond_to :json
 
     def create
-        category = current_user.categories.build(category_params)
+        category = current_user.finance_categories.build(category_params)
 
         if category.save
             render json: Finance::CategorySerializer.new(

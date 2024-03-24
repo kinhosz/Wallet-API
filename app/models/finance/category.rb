@@ -6,5 +6,6 @@ class Finance::Category < ApplicationRecord
 
     belongs_to :user
 
-    has_many :finance_transactions, class_name: "Finance::Transaction", dependent: :destroy
+    has_many :finance_transactions, class_name: "Finance::Transaction"
+    has_many :finance_planning_line, class_name: "Finance::PlanningLine"
 end
