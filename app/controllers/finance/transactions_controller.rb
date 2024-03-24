@@ -9,7 +9,7 @@ class Finance::TransactionsController < ApplicationController
       value: transaction_params[:value]
     )
 
-    category = current_user.categories.find_by(
+    category = current_user.finance_categories.find_by(
       uuid: transaction_params[:category]
     )
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_01_175243) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_233449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -25,6 +25,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_01_175243) do
     t.datetime "updated_at", null: false
     t.uuid "uuid", default: -> { "gen_random_uuid()" }
     t.index ["user_id"], name: "index_finance_categories_on_user_id"
+  end
+
+  create_table "finance_planning_lines", force: :cascade do |t|
+    t.decimal "value"
+    t.bigint "finance_planning_id"
+    t.bigint "finance_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["finance_category_id"], name: "index_finance_planning_lines_on_finance_category_id"
+    t.index ["finance_planning_id"], name: "index_finance_planning_lines_on_finance_planning_id"
+  end
+
+  create_table "finance_plannings", force: :cascade do |t|
+    t.date "date_start", null: false
+    t.date "date_end", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_finance_plannings_on_user_id"
   end
 
   create_table "finance_transactions", force: :cascade do |t|
@@ -53,5 +72,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_01_175243) do
   end
 
   add_foreign_key "finance_categories", "users"
+  add_foreign_key "finance_planning_lines", "finance_categories"
+  add_foreign_key "finance_planning_lines", "finance_plannings"
+  add_foreign_key "finance_plannings", "users"
   add_foreign_key "finance_transactions", "finance_categories"
 end
