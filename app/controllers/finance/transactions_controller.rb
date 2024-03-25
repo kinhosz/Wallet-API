@@ -1,5 +1,6 @@
 class Finance::TransactionsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_planning, only: [:index]
   respond_to :json
 
   def create
@@ -30,10 +31,24 @@ class Finance::TransactionsController < ApplicationController
     end
   end
 
+  def index
+    transactions_service = TransactionsByDateService.new(current_user)
+    serialized_transactions = transactions.map do |transaction|
+      Finance::TransactionSerializer.new(transaction).serializable_hash[:data][:attributes]
+    end
+
+    return json: serialized_transactions,
+           status: :ok
+  end
+
   private
 
   def transaction_params
     params.require(:transaction).permit(
       :occurred_at, :description, :value, :category)
+  end
+
+  def set_planning
+    @planning = current_user.finance_planning.find_by(uuid: params[:planning_id])
   end
 end
