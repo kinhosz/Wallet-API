@@ -15,7 +15,9 @@ Rails.application.routes.draw do
 
   namespace :finance do
     resources :planning_lines
-    resources :plannings
+    resources :plannings do
+      resources :transactions, only: [:index]
+    end
     resources :transactions, only: [:create]
     resources :categories, only: [:create]
   end
