@@ -50,7 +50,7 @@ If you're using macOS, start the PostgreSQL service using Homebrew:
 brew services start postgresql
 ```
 
-### Windows:
+### Linux:
 
 If you're using Windows, start the PostgreSQL service with the following command:
 
