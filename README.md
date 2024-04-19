@@ -52,7 +52,7 @@ brew services start postgresql
 
 ### Linux:
 
-If you're using Windows, start the PostgreSQL service with the following command:
+If you're using Linux, start the PostgreSQL service with the following command:
 
 ```bash
 sudo service postgresql start
