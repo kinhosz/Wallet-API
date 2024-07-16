@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
+  get 'users/show', to: 'users/profile#show'
+
   namespace :finance do
     resources :planning_lines
     resources :plannings do
