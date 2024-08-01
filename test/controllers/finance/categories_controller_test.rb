@@ -18,8 +18,7 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
       category: {
         name: "credit card",
         description: "credit card category",
-        category_type: "expense",
-        is_recurring: true
+        category_type: "expense"
       }
     }
 
@@ -33,8 +32,7 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
         "category": {
           "name": "credit card",
           "description": "credit card category",
-          "category_type": "expense",
-          "is_recurring": true
+          "category_type": "expense"
         }
       }
     )
@@ -49,8 +47,7 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
         "category": {
           "name": "",
           "description": "",
-          "category_type": "",
-          "is_recurring": false
+          "category_type": ""
         }
       }
     )

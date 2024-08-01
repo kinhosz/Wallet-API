@@ -1,5 +1,5 @@
 class Finance::PlanningSerializer
     include JSONAPI::Serializer
-    attributes :date_start, :date_end
+    attributes :currency, :date_start, :date_end
 end
   

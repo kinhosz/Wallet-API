@@ -33,12 +33,11 @@ class Finance::TransactionsController < ApplicationController
 
   def index
     transactions_service = TransactionsByDateService.new(current_user)
-    serialized_transactions = transactions.map do |transaction|
+    serialized_transactions = transactions_service.map do |transaction|
       Finance::TransactionSerializer.new(transaction).serializable_hash[:data][:attributes]
     end
 
-    return json: serialized_transactions,
-           status: :ok
+    render json: serialized_transactions, status: :ok
   end
 
   private

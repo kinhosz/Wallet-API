@@ -16,6 +16,7 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
     post finance_plannings_url, params: {
       planning: {
+        currency: "BRL",
         date_start: "24-03-2024",
         date_end: "24-04-2024",
         lines: [
@@ -33,6 +34,7 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
       finance_plannings_url,
       params: {
         planning: {
+          currency: "BRL",
           date_start: "24-03-2024",
           date_end: "24-04-2024",
           lines: [
