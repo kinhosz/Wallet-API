@@ -17,6 +17,6 @@ class Finance::CategoriesController < ApplicationController
     private
 
     def category_params
-        params.require(:category).permit(:name, :description, :is_recurring, :category_type)
+        params.require(:category).permit(:name, :description, :category_type)
     end
 end

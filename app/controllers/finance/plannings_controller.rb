@@ -4,6 +4,7 @@ class Finance::PlanningsController < ApplicationController
 
   def create
     finance_planning = current_user.finance_planning.build(
+      currency: finance_planning_params[:currency],
       date_start: finance_planning_params[:date_start],
       date_end: finance_planning_params[:date_end]
     )
@@ -39,6 +40,6 @@ class Finance::PlanningsController < ApplicationController
 
   private
   def finance_planning_params
-    params.require(:planning).permit(:date_start, :date_end, lines: [:category, :value])
+    params.require(:planning).permit(:currency, :date_start, :date_end, lines: [:category, :value])
   end  
 end
