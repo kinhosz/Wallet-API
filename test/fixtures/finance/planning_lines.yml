@@ -1,11 +1,41 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+current_credit_card_brl:
+  value: -200.00
+  finance_planning: current_brl
+  finance_category: credit_card
+
+current_school_brl:
+  value: -85.00
+  finance_planning: current_brl
+  finance_category: school
+
+current_salary_brl:
+  value: 1450.00
+  finance_planning: current_brl
+  finance_category: salary
+
+previous_credit_card_brl:
+  value: -350.00
+  finance_planning: previous_brl
+  finance_category: credit_card
+
+previous_health_brl:
+  value: -40.00
+  finance_planning: previous_brl
+  finance_category: health
+
+previous_payment_brl:
+  value: 420.00
+  finance_planning: previous_brl
+  finance_category: payment
+
+current_credit_card_usd:
+  value: -320.00
+  finance_planning: current_usd
+  finance_category: credit_card
+
+previous_credit_card_usd:
+  value: -490.00
+  finance_planning: previous_usd
+  finance_category: credit_card

@@ -1,7 +1,71 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
+credit_card_brl_00:
+  currency: "BRL"
+  description: "previous"
+  occurred_at: "15-07-2024"
+  value: -40.00
+  finance_category: credit_card
 
+credit_card_brl_01:
+  currency: "BRL"
+  description: "current"
+  occurred_at: "15-08-2024"
+  value: -280.00
+  finance_category: credit_card
+
+school_brl_00:
+  currency: "BRL"
+  description: "current"
+  occurred_at: "15-08-2024"
+  value: -120.00
+  finance_category: school
+
+salary_brl_00:
+  currency: "BRL"
+  description: "previous"
+  occurred_at: "15-07-2024"
+  value: 849.00
+  finance_category: salary
+
+salary_brl_01:
+  currency: "BRL"
+  description: "current"
+  occurred_at: "15-08-2024"
+  value: 1800.00
+  finance_category: salary
+
+payment_brl_00:
+  currency: "BRL"
+  description: "previous"
+  occurred_at: "15-07-2024"
+  value: 248.00
+  finance_category: payment
+
+payment_brl_01:
+  currency: "BRL"
+  description: "current"
+  occurred_at: "15-08-2024"
+  value: 927.00
+  finance_category: payment
+
+health_brl_00:
+  currency: "BRL"
+  description: "previous"
+  occurred_at: "15-07-2024"
+  value: -349.00
+  finance_category: health
+
+credit_card_usd_00:
+  currency: "USD"
+  description: "previous"
+  occurred_at: "15-07-2024"
+  value: -427.00
+  finance_category: credit_card
+
+credit_card_usd_01:
+  currency: "USD"
+  description: "current"
+  occurred_at: "15-08-2024"
+  value: -744.00
+  finance_category: credit_card

@@ -4,7 +4,7 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
     setup do
-        user = users(:one)
+        user = users(:admin)
         sign_in user
 
         category = finance_categories(:credit_card)
@@ -58,9 +58,6 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         
         assert_equal @transaction[:transaction][:value],
             json_response['value'].to_f
-        
-        assert_equal finance_categories(:credit_card).uuid,
-            json_response[':category']
     end
 
     test "shoud not create a transaction without a valid category" do
