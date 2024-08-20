@@ -7,7 +7,8 @@ class Finance::TransactionsController < ApplicationController
     transaction = Finance::Transaction.new(
       occurred_at: transaction_params[:occurred_at],
       description: transaction_params[:description],
-      value: transaction_params[:value]
+      value: transaction_params[:value],
+      currency: transaction_params[:currency],
     )
 
     category = current_user.finance_categories.find_by(
@@ -44,7 +45,7 @@ class Finance::TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(
-      :occurred_at, :description, :value, :category)
+      :occurred_at, :description, :value, :category, :currency)
   end
 
   def set_planning

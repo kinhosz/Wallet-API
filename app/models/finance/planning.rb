@@ -1,5 +1,5 @@
 class Finance::Planning < ApplicationRecord
-    validates :currency, :date_end, :date_start, presence: true
+    validates :currency, :date_start, presence: true
 
     belongs_to :user
 

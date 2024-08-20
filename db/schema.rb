@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_01_223151) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_20_104843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -18,7 +18,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_01_223151) do
   create_table "finance_categories", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.text "description", default: "", null: false
-    t.string "category_type", default: "expense", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -38,11 +37,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_01_223151) do
 
   create_table "finance_plannings", force: :cascade do |t|
     t.date "date_start", null: false
-    t.date "date_end", null: false
+    t.date "date_end"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "currency", default: "BRL", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
     t.index ["user_id"], name: "index_finance_plannings_on_user_id"
   end
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_01_223151) do
     t.bigint "finance_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", default: "BRL", null: false
     t.index ["finance_category_id"], name: "index_finance_transactions_on_finance_category_id"
   end
 
