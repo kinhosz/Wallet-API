@@ -1,11 +1,36 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-credit_card:
-  name: "Credit Card"
-  description: "Credit Card category"
-  category_type: "expense"
-  uuid: "fe3414rfa3941"
+credit_card: {
+  name: "Credit Card",
+  description: "Credit Card category",
+  uuid: "e0b1e835-fe1f-456f-8724-01df5bb7aa1e",
+  user: admin,
+}
+
+school: {
+  name: "School",
+  description: "School expenses",
+  uuid: "988b5b62-a4df-434b-a4df-7b85467aba9f",
+  user: admin,
+}
+
+salary: {
+  name: "Salary",
+  description: "Monthly salary",
+  uuid: "e743ad2a-3515-47ae-a55f-a16295e5155e",
+  user: admin,
+}
+
+payment: {
+  name: "Payment",
+  description: "Payment",
+  uuid: "572f21e1-1e16-4880-8e05-752ebb8ba178",
+  user: admin,
+}
+
+health: {
+  name: "Health",
+  description: "Health",
+  uuid: "c70a4acf-2d76-4b68-9c0e-259d22bdd47d",
+  user: admin,
+}

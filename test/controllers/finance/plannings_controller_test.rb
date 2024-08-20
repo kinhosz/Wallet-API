@@ -4,7 +4,7 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    user = users(:one)
+    user = users(:admin)
     sign_in user
   end
 
@@ -12,6 +12,9 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
     sign_out :user
   end
 
+  # ------------------------------
+  # POST #create
+  # ------------------------------
   test "should not create planning when not logged in" do
     sign_out :user
     post finance_plannings_url, params: {
@@ -29,7 +32,7 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test "should create a category" do
+  test "should create a planning" do
     post(
       finance_plannings_url,
       params: {
@@ -48,5 +51,46 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
     )
   
     assert_response :success
+  end
+
+  # ------------------------------
+  # GET #current
+  # ------------------------------
+  test "should not get the current planning when not logged in" do
+    sign_out :user
+    get current_finance_plannings_path, params: { planning: { currency: "BRL" } }
+    assert_response :unauthorized
+  end
+
+  test "should return a bad request for missing currency" do
+    get current_finance_plannings_path
+    assert_response :bad_request
+    json_response = JSON.parse(response.body)
+    assert_equal "Currency parameter is required", json_response["error"]
+  end
+
+  test "should get the current planning for BRL" do
+    get current_finance_plannings_path, params: { currency: "BRL" }
+    assert_response :success
+
+    body = JSON.parse(response.body)
+
+    assert_equal 708.00, body["initial_balance"], "initial balance"
+    assert_equal 2327.00, body["monthly_balance"], "monthly balance"
+
+    body["categories"].each do |item|
+      if item["title"] == finance_categories(:credit_card).name
+        assert_equal finance_planning_lines(:current_credit_card_brl).value, item["planned"]
+        assert_equal finance_transactions(:credit_card_brl_01).value, item["real"]
+      elsif item["title"] == finance_categories(:school).name
+        assert_equal finance_planning_lines(:current_school_brl).value, item["planned"]
+        assert_equal finance_transactions(:school_brl_00).value, item["real"]
+      elsif item["title"] == finance_categories(:salary).name
+        assert_equal finance_planning_lines(:current_salary_brl).value, item["planned"]
+        assert_equal finance_transactions(:salary_brl_01).value, item["real"]
+      else
+        assert false, "Value not mapped"
+      end
+    end
   end
 end

@@ -4,7 +4,7 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    user = users(:one)
+    user = users(:admin)
     sign_in user
   end
 
