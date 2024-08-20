@@ -13,6 +13,7 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
 
         @transaction = {
             transaction: {
+                currency: "BRL",
                 description: "credit card payment",
                 occurred_at: Date.today,
                 value: 200.00,
@@ -22,6 +23,7 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
 
         @invalid_transaction = {
             transaction: {
+                currency: "BRL",
                 description: "credit card payment",
                 occurred_at: Date.today,
                 value: 200.00,

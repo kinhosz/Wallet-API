@@ -18,7 +18,6 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
       category: {
         name: "credit card",
         description: "credit card category",
-        category_type: "expense"
       }
     }
 
@@ -32,7 +31,6 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
         "category": {
           "name": "credit card",
           "description": "credit card category",
-          "category_type": "expense"
         }
       }
     )
@@ -47,7 +45,6 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
         "category": {
           "name": "",
           "description": "",
-          "category_type": ""
         }
       }
     )
