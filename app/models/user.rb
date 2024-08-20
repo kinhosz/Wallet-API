@@ -6,5 +6,13 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
   
   has_many :finance_categories, class_name: "Finance::Category", dependent: :destroy
-  has_many :finance_planning, class_name: "Finance::Planning", dependent: :destroy
+  has_many :finance_plannings, class_name: "Finance::Planning", dependent: :destroy
+
+  def finance_plannings(currency=nil)
+    if currency.present?
+      super().by_currency(currency)
+    else
+      super()
+    end
+  end
 end

@@ -1,6 +1,6 @@
 class TransactionsByDateService
     def initialize(user)
-        plannings = user.finance_planning
+        plannings = user.finance_plannings
         lines = []
         plannings do |planning|
             lines += planning.lines
