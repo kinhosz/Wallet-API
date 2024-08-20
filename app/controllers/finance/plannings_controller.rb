@@ -3,7 +3,7 @@ class Finance::PlanningsController < ApplicationController
   respond_to :json
 
   def create
-    finance_planning = current_user.finance_planning.build(
+    finance_planning = current_user.finance_plannings.build(
       currency: finance_planning_params[:currency],
       date_start: finance_planning_params[:date_start],
       date_end: finance_planning_params[:date_end]
@@ -29,9 +29,9 @@ class Finance::PlanningsController < ApplicationController
                               ).serializable_hash[:data][:attributes]
 
       unless unknown_categories.size
-        render json: serializable_planning, status: :created, location: finance_planning
+        render json: serializable_planning, status: :created, location: finance_plannings_path
       else
-        render json: serializable_planning, status: :created, location: finance_planning, unknown_categories: unknown_categories
+        render json: serializable_planning, status: :created, location: finance_plannings_path, unknown_categories: unknown_categories
       end
     else
       render json: finance_planning.errors, status: :unprocessable_entity
