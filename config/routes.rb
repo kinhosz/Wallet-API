@@ -23,6 +23,6 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: [:create]
-    resources :categories, only: [:create]
+    resources :categories, only: [:index, :create]
   end
 end
