@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         get 'current'
       end
     end
-    resources :transactions, only: [:create]
+    resources :transactions, only: [:index, :create]
     resources :categories, only: [:index, :create]
   end
 end
