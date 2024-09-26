@@ -10,19 +10,14 @@ class Finance::TransactionsController < ApplicationController
   end
 
   def index_by_date
-    puts "Start Date: #{params[:start_date]}"
-    puts "End Date: #{params[:end_date]}"
     transactions = Finance::Transaction.joins(:finance_category)
                                        .where(finance_categories: { user_id: current_user.id })
   
     if params[:start_date].present? && params[:end_date].present?
-      # Filtro para intervalo de datas
       transactions = transactions.where(occurred_at: params[:start_date]..params[:end_date])
     elsif params[:start_date].present?
-      # Filtro para transações que ocorreram exatamente na data de start_date
       transactions = transactions.where(occurred_at: params[:start_date])
     elsif params[:end_date].present?
-      # Filtro para transações que ocorreram até a data de end_date
       transactions = transactions.where('occurred_at <= ?', params[:end_date])
     end
   
@@ -52,7 +47,7 @@ class Finance::TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(
-      :occurred_at, :description, :value, :category, :currency
+      :occurred_at, :description, :value, :category
     )
   end
 end
