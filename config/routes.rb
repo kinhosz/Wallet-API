@@ -24,7 +24,7 @@ Rails.application.routes.draw do
         get 'filter_by_date', to: 'transactions#index_by_date'
       end
     end
-    resources :categories, only: [:index] do
+    resources :categories, only: [:index, :create]
       collection do
         post 'upsert'
       end
