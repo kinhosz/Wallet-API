@@ -7,37 +7,43 @@ categories = Finance::Category.create!([
     name: 'Salary', 
     description: 'Monthly Salary',
     uuid: '065b2332-b0f0-4e8a-a0cb-53e4cfa11610',
-    user_id: admin.id
+    user_id: admin.id,
+    icon: 23,
   },
   { 
     name: 'Payment', 
     description: 'Arbitrary Payments',
     uuid: '8cc2bc37-67bd-4971-acee-fab1296cced3',
-    user_id: admin.id
+    user_id: admin.id,
+    icon: 12,
   },
   { 
     name: 'School', 
     description: 'School expenses',
     uuid: '75db430c-acb5-4d7d-a193-d05657ee013d',
-    user_id: admin.id
+    user_id: admin.id,
+    icon: 2,
   },
   { 
     name: 'House', 
     description: 'House expenses',
     uuid: 'ffd26970-49c4-49b9-9930-0398db62d91e',
-    user_id: admin.id
+    user_id: admin.id,
+    icon: 8,
   },
   { 
     name: 'Food', 
     description: 'Food expenses',
     uuid: '3850cf70-0a54-40ea-b21f-187f9a66a8a5',
-    user_id: admin.id
+    user_id: admin.id,
+    icon: 3,
   },
   { 
     name: 'Gym', 
     description: 'Gym expenses',
     uuid: '756dd78a-ec48-47f8-9aaf-e4569ff084e3',
-    user_id: admin.id
+    user_id: admin.id,
+    icon: 18,
   },
 ])
 

@@ -14,9 +14,16 @@ class Finance::CategoriesController < ApplicationController
         end
     end
 
+    def index
+        categories = current_user.finance_categories
+        render json: Finance::CategorySerializer.new(
+            categories
+        ).serializable_hash[:data].map { |category| category[:attributes] }, status: :ok
+    end
+
     private
 
     def category_params
-        params.require(:category).permit(:name, :description)
+        params.require(:category).permit(:name, :description, :icon)
     end
 end
