@@ -9,11 +9,15 @@ class PlanningCalculator
 
   def compute
     {
+      uuid: @planning.uuid,
       start_date: @date_start,
       end_date: @date_end,
       categories: @categories_list.map do |category|
         {
           title: category[:title],
+          description: category[:description],
+          uuid: category[:uuid],
+          icon: category[:icon],
           planned: category[:planned].to_f,
           real: category[:real].to_f
         }
@@ -35,6 +39,9 @@ class PlanningCalculator
       'finance_categories.id, finance_planning_lines.value'
     ).select(
       'finance_categories.name AS title,
+      finance_categories.description AS description,
+      finance_categories.uuid AS uuid,
+      finance_categories.icon AS icon,
       finance_planning_lines.value AS planned,
       COALESCE(SUM(finance_transactions.value), 0) AS real'
     )

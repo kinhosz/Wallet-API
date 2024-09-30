@@ -39,3 +39,11 @@ health: {
   user: admin,
   icon: 3,
 }
+
+transport: {
+  name: "Transport",
+  description: "Transport expenses",
+  uuid: "95b71e8c-c27b-4485-9427-91aea94ae826",
+  user: admin,
+  icon: 6,
+}

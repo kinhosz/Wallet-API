@@ -93,4 +93,37 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  # ------------------------------
+  # POST #add_line
+  # ------------------------------
+  test "should add a finance planning line" do
+    planning = finance_plannings(:current_brl)
+    assert_difference('Finance::PlanningLine.count', 1) do
+      post add_line_finance_planning_path(planning.uuid),
+        params: {
+          planning_line: {
+            category: finance_categories(:transport).uuid,
+            value: 100
+          }
+        }
+    end
+  
+    assert_response :created
+  end
+
+  test "should not create the line twice" do
+    planning = finance_plannings(:current_brl)
+    assert_no_difference('Finance::PlanningLine.count') do
+      post add_line_finance_planning_path(planning.uuid),
+        params: {
+          planning_line: {
+            category: finance_categories(:credit_card).uuid,
+            value: 150
+          }
+        }
+    end
+  
+    assert_response :unprocessable_entity
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_30_195232) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_01_160310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_30_195232) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["finance_category_id"], name: "index_finance_planning_lines_on_finance_category_id"
+    t.index ["finance_planning_id", "finance_category_id"], name: "index_planning_lines_on_planning_and_category", unique: true
     t.index ["finance_planning_id"], name: "index_finance_planning_lines_on_finance_planning_id"
   end
 

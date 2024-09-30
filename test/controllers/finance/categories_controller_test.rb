@@ -73,7 +73,7 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
   
     body = JSON.parse(response.body)
 
-    assert_equal 5, body.length, "Categories length should be 5"
+    assert_equal 6, body.length, "Categories length should be 6"
   
     body.each do |category|
       case category["name"]
@@ -97,6 +97,10 @@ class Finance::CategoriesControllerTest < ActionDispatch::IntegrationTest
         assert_equal "Health", category["description"]
         assert_equal "c70a4acf-2d76-4b68-9c0e-259d22bdd47d", category["uuid"]
         assert_equal 3, category["icon"]
+      when "Transport"
+        assert_equal "Transport expenses", category["description"]
+        assert_equal "95b71e8c-c27b-4485-9427-91aea94ae826", category["uuid"]
+        assert_equal 6, category["icon"]
       else
         assert false, "Unexpected category: #{category['name']}"
       end
