@@ -21,8 +21,9 @@ Rails.application.routes.draw do
       collection do
         get 'current'
       end
+      post 'add_line', on: :member
     end
     resources :transactions, only: [:create]
-    resources :categories, only: [:create]
+    resources :categories, only: [:create, :index]
   end
 end

@@ -1,5 +1,5 @@
 class Finance::Category < ApplicationRecord
-    validates :name, length: { minimum: 1, maximum: 20 }
+    validates :name, length: { minimum: 1, maximum: 20 }, uniqueness: true
     validates :description, length: { maximum: 200 }
     validates :name, :user_id, presence: true
 

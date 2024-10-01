@@ -48,6 +48,29 @@ class Finance::PlanningsController < ApplicationController
     render json: computed.merge(balance)
   end
 
+  def add_line
+    finance_planning = current_user.finance_plannings.find_by!(uuid: params[:id])
+    category = current_user.finance_categories.find_by!(uuid: line_params[:category])
+    line = finance_planning.finance_planning_lines.new(
+      finance_category_id: category.id, value: line_params[:value]
+    )
+
+    if line.save
+      serializable_line = Finance::PlanningLineSerializer.new(
+                            line.reload
+                          ).serializable_hash[:data][:attributes]
+      render json: serializable_line, status: :created
+    else
+      render json: { success: false, errors: line.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def line_params
+    params.require(:planning_line).permit(:category, :value)
+  end
+
   private
   def finance_planning_params
     params.require(:planning).permit(:currency, :date_start, :date_end, lines: [:category, :value])
