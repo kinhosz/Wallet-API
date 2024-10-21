@@ -9,29 +9,43 @@ class PlanningCalculator
 
   def compute
     {
+      uuid: @planning.uuid,
       start_date: @date_start,
       end_date: @date_end,
-      categories: @categories_list.map do |category|
+      planning_lines: @planning_lines.map do |line|
         {
-          title: category[:title],
-          planned: category[:planned].to_f,
-          real: category[:real].to_f
+          category: {
+            name: line[:name],
+            description: line[:description],
+            uuid: line[:uuid],
+            icon: line[:icon],
+          },
+          planned: line[:planned].to_f,
+          real: line[:real].to_f
         }
       end,
     }
   end
 
   def set_categories
-    @categories_list = @planning.finance_planning_lines.left_outer_joins(
+    @planning_lines = @planning.finance_planning_lines.left_outer_joins(
       finance_category: :finance_transactions
     ).where(
-      finance_categories: { finance_transactions: { occurred_at: @date_start..@date_end, currency: @planning.currency } }
+      "(finance_transactions.occurred_at BETWEEN ? AND ? 
+        AND finance_transactions.currency = ?
+      ) OR finance_transactions.id IS NULL",
+      @date_start,
+      @date_end,
+      @planning.currency
     ).group(
       'finance_categories.id, finance_planning_lines.value'
     ).select(
-      'finance_categories.name AS title,
+      'finance_categories.name AS name,
+      finance_categories.description AS description,
+      finance_categories.uuid AS uuid,
+      finance_categories.icon AS icon,
       finance_planning_lines.value AS planned,
-      SUM(finance_transactions.value) AS real'
+      COALESCE(SUM(finance_transactions.value), 0) AS real'
     )
   end
 end
