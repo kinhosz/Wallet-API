@@ -78,14 +78,14 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 708.00, body["initial_balance"], "initial balance"
     assert_equal 2327.00, body["monthly_balance"], "monthly balance"
 
-    body["categories"].each do |item|
-      if item["title"] == finance_categories(:credit_card).name
+    body["planning_lines"].each do |item|
+      if item["category"]["name"] == finance_categories(:credit_card).name
         assert_equal finance_planning_lines(:current_credit_card_brl).value, item["planned"]
         assert_equal finance_transactions(:credit_card_brl_01).value, item["real"]
-      elsif item["title"] == finance_categories(:school).name
+      elsif item["category"]["name"] == finance_categories(:school).name
         assert_equal finance_planning_lines(:current_school_brl).value, item["planned"]
         assert_equal finance_transactions(:school_brl_00).value, item["real"]
-      elsif item["title"] == finance_categories(:salary).name
+      elsif item["category"]["name"] == finance_categories(:salary).name
         assert_equal finance_planning_lines(:current_salary_brl).value, item["planned"]
         assert_equal finance_transactions(:salary_brl_01).value, item["real"]
       else
