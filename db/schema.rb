@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_26_013021) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_01_160310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_013021) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.integer "icon", default: -1
     t.index ["user_id"], name: "index_finance_categories_on_user_id"
   end
 
@@ -32,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_26_013021) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["finance_category_id"], name: "index_finance_planning_lines_on_finance_category_id"
+    t.index ["finance_planning_id", "finance_category_id"], name: "index_planning_lines_on_planning_and_category", unique: true
     t.index ["finance_planning_id"], name: "index_finance_planning_lines_on_finance_planning_id"
   end
 

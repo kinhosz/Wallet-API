@@ -5,6 +5,7 @@ credit_card: {
   description: "Credit Card category",
   uuid: "e0b1e835-fe1f-456f-8724-01df5bb7aa1e",
   user: admin,
+  icon: -1,
 }
 
 school: {
@@ -12,6 +13,7 @@ school: {
   description: "School expenses",
   uuid: "988b5b62-a4df-434b-a4df-7b85467aba9f",
   user: admin,
+  icon: 0,
 }
 
 salary: {
@@ -19,6 +21,7 @@ salary: {
   description: "Monthly salary",
   uuid: "e743ad2a-3515-47ae-a55f-a16295e5155e",
   user: admin,
+  icon: 1,
 }
 
 payment: {
@@ -26,6 +29,7 @@ payment: {
   description: "Payment",
   uuid: "572f21e1-1e16-4880-8e05-752ebb8ba178",
   user: admin,
+  icon: 2,
 }
 
 health: {
@@ -33,4 +37,13 @@ health: {
   description: "Health",
   uuid: "c70a4acf-2d76-4b68-9c0e-259d22bdd47d",
   user: admin,
+  icon: 3,
+}
+
+transport: {
+  name: "Transport",
+  description: "Transport expenses",
+  uuid: "95b71e8c-c27b-4485-9427-91aea94ae826",
+  user: admin,
+  icon: 6,
 }

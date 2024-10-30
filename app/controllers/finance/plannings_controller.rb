@@ -48,7 +48,24 @@ class Finance::PlanningsController < ApplicationController
     render json: computed.merge(balance)
   end
 
+  def upsert_line
+    finance_planning = current_user.finance_plannings.find_by!(uuid: params[:id])
+    category = current_user.finance_categories.find_by!(uuid: line_params[:category])
+    line = finance_planning.finance_planning_lines.find_by(finance_category_id: category.id)
+
+    if line
+      update_line(line, line_params[:value])
+    else
+      create_line(finance_planning, category, line_params[:value])
+    end
+  end
+
   private
+
+  def line_params
+    params.require(:planning_line).permit(:category, :value)
+  end
+
   def finance_planning_params
     params.require(:planning).permit(:currency, :date_start, :date_end, lines: [:category, :value])
   end
@@ -57,5 +74,27 @@ class Finance::PlanningsController < ApplicationController
     unless params[:currency].present?
       render json: { error: "Currency parameter is required" }, status: :bad_request
     end
+  end
+
+  def upsert_render(line, success)
+    if success
+      serializable_line = Finance::PlanningLineSerializer.new(
+                            line.reload
+                          ).serializable_hash[:data][:attributes]
+      render json: serializable_line, status: :created
+    else
+      render json: { success: false, errors: line.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update_line(line, value)
+    upsert_render(line, line.update(value: value))
+  end
+
+  def create_line(planning, category, value)
+    line = planning.finance_planning_lines.new(
+      finance_category_id: category.id, value: value
+    )
+    upsert_render(line, line.save)
   end
 end
