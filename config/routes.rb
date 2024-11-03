@@ -24,6 +24,10 @@ Rails.application.routes.draw do
         post 'upsert'
       end
     end
-    resources :transactions, only: [:index, :create]
+    resources :transactions, only: [:index, :create] do
+      collection do
+        get 'filter_by_date', to: 'transactions#index_by_date'
+      end
+    end
   end
 end

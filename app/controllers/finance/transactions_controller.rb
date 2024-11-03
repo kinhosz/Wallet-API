@@ -38,6 +38,19 @@ class Finance::TransactionsController < ApplicationController
     render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
   end
 
+  def index_by_date
+    transactions = Finance::Transaction.joins(:finance_category)
+                                       .where(finance_categories: { user_id: current_user.id })
+  
+    if params[:date].present?
+      transactions = transactions.where(occurred_at: params[:date])
+    else
+      transactions = []
+    end
+  
+    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
+  end  
+
   private
 
   def transaction_params
