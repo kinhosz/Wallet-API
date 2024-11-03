@@ -31,6 +31,13 @@ class Finance::TransactionsController < ApplicationController
     end
   end
 
+  def index
+    transactions = Finance::Transaction.joins(:finance_category)
+                                       .where(finance_categories: { user_id: current_user.id })
+
+    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
+  end
+
   private
 
   def transaction_params
