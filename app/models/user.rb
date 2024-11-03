@@ -7,6 +7,7 @@ class User < ApplicationRecord
   
   has_many :finance_categories, class_name: "Finance::Category", dependent: :destroy
   has_many :finance_plannings, class_name: "Finance::Planning", dependent: :destroy
+  has_many :finance_transactions, class_name: "Finance::Transaction", dependent: :destroy
 
   def finance_plannings(currency=nil)
     if currency.present?
