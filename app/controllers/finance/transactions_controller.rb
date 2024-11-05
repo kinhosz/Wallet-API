@@ -8,6 +8,7 @@ class Finance::TransactionsController < ApplicationController
       description: transaction_params[:description],
       value: transaction_params[:value],
       currency: transaction_params[:currency],
+      user_id: current_user.id
     )
 
     category = current_user.finance_categories.find_by(
@@ -37,18 +38,24 @@ class Finance::TransactionsController < ApplicationController
   end
 
   def index_by_date
+    date = permitted_params[:date]
     transactions = Finance::Transaction.where(user_id: current_user.id)
-  
-    if params[:date].present?
-      transactions = transactions.where(occurred_at: params[:date])
+
+    if date.present?
+      transactions = transactions.where(occurred_at: date)
     else
       transactions = []
     end
-  
+
     render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
-  end  
+  end
 
   private
+
+  def permitted_params
+    params.require(:date)
+    params.permit(:date)
+  end
 
   def transaction_params
     params.require(:transaction).permit(
