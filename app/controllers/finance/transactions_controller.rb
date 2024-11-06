@@ -41,21 +41,12 @@ class Finance::TransactionsController < ApplicationController
     date = permitted_params[:date]
     transactions = Finance::Transaction.where(user_id: current_user.id)
 
-    if date.present?
-      transactions = transactions.where(occurred_at: date)
-    else
-      transactions = []
-    end
+    transactions = transactions.where(occurred_at: date)
 
     render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
   end
 
   private
-
-  def permitted_params
-    params.require(:date)
-    params.permit(:date)
-  end
 
   def transaction_params
     params.require(:transaction).permit(

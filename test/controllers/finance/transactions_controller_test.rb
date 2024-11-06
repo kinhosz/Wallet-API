@@ -82,7 +82,6 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         assert json_response.is_a?(Array)
         assert_not json_response.empty?
     
-        # Verifica se a transação retornada está correta
         assert_equal @transaction.description, json_response[0]['description']
         assert_equal @transaction.occurred_at.strftime('%Y-%m-%d'), json_response[0]['occurred_at']
         assert_equal @transaction.value.to_f, json_response[0]['value']
@@ -94,18 +93,17 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
     # ------------------------------
 
     test "should get index_by_date with specific date" do
-    specific_date = Date.today.strftime('%Y-%m-%d')
+        specific_date = Date.today.strftime('%Y-%m-%d')
 
-    get filter_by_date_finance_transactions_url, params: { start_date: specific_date }
+        get filter_by_date_finance_transactions_url, params: { start_date: specific_date }
 
-    assert_response :success
+        assert_response :success
 
-    json_response = JSON.parse(response.body)
-    assert json_response.is_a?(Array)
-    
-    # Verifica que a resposta só contém transações na data específica
-    json_response.each do |transaction|
-        assert_equal specific_date, transaction['occurred_at']
-    end
+        json_response = JSON.parse(response.body)
+        assert json_response.is_a?(Array)
+
+        json_response.each do |transaction|
+            assert_equal specific_date, transaction['occurred_at']
+        end
     end
 end
