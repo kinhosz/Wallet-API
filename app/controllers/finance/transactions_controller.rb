@@ -38,7 +38,7 @@ class Finance::TransactionsController < ApplicationController
   end
 
   def index_by_date
-    date = permitted_params[:date]
+    date = index_by_date_params[:date]
     transactions = Finance::Transaction.where(user_id: current_user.id)
 
     transactions = transactions.where(occurred_at: date)
@@ -47,6 +47,10 @@ class Finance::TransactionsController < ApplicationController
   end
 
   private
+
+  def index_by_date_params
+    { date: params.require(:date) }
+  end  
 
   def transaction_params
     params.require(:transaction).permit(
