@@ -49,8 +49,8 @@ class Finance::TransactionsController < ApplicationController
   private
 
   def index_by_date_params
-    { date: params.require(:date) }
-  end  
+    params.permit(:date)
+  end
 
   def transaction_params
     params.require(:transaction).permit(
