@@ -61,12 +61,15 @@ Finance::PlanningLine.create!([
 ])
 
 Finance::Transaction.create!([
-  { currency: 'BRL', description: 'First balance', occurred_at: Date.today - 2.month, value: 500, finance_category_id: categories[0].id },
-  { currency: 'BRL', description: 'Salary income', occurred_at: Date.today - 15.days, value: 1500, finance_category_id: categories[0].id },
-  { currency: 'BRL', description: 'Freelance payment', occurred_at: Date.today - 10.days, value: 400, finance_category_id: categories[1].id },
-  { currency: 'BRL', description: 'books', occurred_at: Date.today - 20.days, value: -380, finance_category_id: categories[2].id },
-  { currency: 'BRL', description: 'New Bedroom', occurred_at: Date.today - 22.days, value: -350, finance_category_id: categories[3].id },
-  { currency: 'BRL', description: 'Picnic', occurred_at: Date.today - 5.days, value: -250, finance_category_id: categories[4].id },
-  { currency: 'BRL', description: 'Jiu jitsu', occurred_at: Date.today - 17.days, value: -100, finance_category_id: categories[5].id },
-  { currency: 'BRL', description: 'Crossfit', occurred_at: Date.today - 40.days, value: -90, finance_category_id: categories[5].id },
+  { currency: 'BRL', description: 'First balance', occurred_at: Date.today - 2.month, value: 500, finance_category_id: categories[0].id, user_id: admin.id },
+  { currency: 'BRL', description: 'Salary income', occurred_at: Date.today - 15.days, value: 1500, finance_category_id: categories[0].id, user_id: admin.id },
+  { currency: 'BRL', description: 'Freelance payment', occurred_at: Date.today - 10.days, value: 400, finance_category_id: categories[1].id, user_id: admin.id },
+  { currency: 'BRL', description: 'books', occurred_at: Date.today - 20.days, value: -380, finance_category_id: categories[2].id, user_id: admin.id },
+  { currency: 'BRL', description: 'New Bedroom', occurred_at: Date.today - 22.days, value: -350, finance_category_id: categories[3].id, user_id: admin.id },
+  { currency: 'BRL', description: 'Picnic', occurred_at: Date.today - 5.days, value: -250, finance_category_id: categories[4].id, user_id: admin.id },
+  { currency: 'BRL', description: 'Jiu jitsu', occurred_at: Date.today - 17.days, value: -100, finance_category_id: categories[5].id, user_id: admin.id },
+  { currency: 'BRL', description: 'Crossfit', occurred_at: Date.today - 40.days, value: -90, finance_category_id: categories[5].id, user_id: admin.id },
+  { currency: 'BRL', description: 'books', occurred_at: Date.today, value: -380, finance_category_id: categories[2].id, user_id: admin.id },
+  { currency: 'BRL', description: 'New Bedroom', occurred_at: Date.today, value: -350, finance_category_id: categories[3].id, user_id: admin.id },
+  { currency: 'BRL', description: 'Picnic', occurred_at: Date.today, value: -250, finance_category_id: categories[4].id, user_id: admin.id },
 ])

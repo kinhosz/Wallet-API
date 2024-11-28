@@ -8,10 +8,6 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 
   get 'users/show', to: 'users/profile#show'
 
@@ -23,10 +19,14 @@ Rails.application.routes.draw do
       end
       post 'upsert_line', on: :member
     end
-    resources :transactions, only: [:create]
     resources :categories, only: [:index] do
       collection do
         post 'upsert'
+      end
+    end
+    resources :transactions, only: [:index, :create] do
+      collection do
+        get 'filter_by_date', to: 'transactions#index_by_date'
       end
     end
   end
