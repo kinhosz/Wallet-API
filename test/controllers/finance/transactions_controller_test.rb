@@ -19,9 +19,29 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
             finance_category: category
         )
 
+        transaction_out_of_range = Finance::Transaction.create!(
+            currency: "BRL",
+            description: "Out of range transaction",
+            occurred_at: Date.today - 10.days,
+            value: 100.00,
+            user_id: user.id,
+            finance_category: category
+        )
+
+        transaction_in_range = Finance::Transaction.create!(
+            currency: "BRL",
+            description: "In range transaction",
+            occurred_at: Date.today - 5.days,
+            value: 150.00,
+            user_id: user.id,
+            finance_category: category
+        )
+
         @user = user
         @category = category
         @transaction_record = transaction_record
+        @transaction_out_of_range = transaction_out_of_range
+        @transaction_in_range = transaction_in_range
 
         @transaction = {
             transaction: {
@@ -112,5 +132,67 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         json_response.each do |transaction|
             assert_equal specific_date, transaction['occurred_at']
         end
+    end
+
+    # ------------------------------
+    # GET #index_by_date_range
+    # ------------------------------
+
+    test "should get index_by_date_range with valid start_date and end_date" do
+        start_date = (Date.today - 7.days).strftime('%Y-%m-%d')
+        end_date = Date.today.strftime('%Y-%m-%d')
+
+        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date }
+
+        assert_response :success
+
+        json_response = JSON.parse(response.body)
+        assert json_response.is_a?(Array)
+
+        json_response.each do |transaction|
+            occurred_at = Date.parse(transaction['occurred_at'])
+            assert occurred_at >= Date.parse(start_date)
+            assert occurred_at <= Date.parse(end_date)
+        end
+
+        assert_includes json_response.map { |t| t['description'] }, @transaction_record.description
+        assert_includes json_response.map { |t| t['description'] }, @transaction_in_range.description
+        assert_not_includes json_response.map { |t| t['description'] }, @transaction_out_of_range.description
+    end
+
+    test "should get empty array for index_by_date_range when no transactions in range" do
+        start_date = (Date.today - 20.days).strftime('%Y-%m-%d')
+        end_date = (Date.today - 15.days).strftime('%Y-%m-%d')
+    
+        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date }
+    
+        assert_response :success
+    
+        json_response = JSON.parse(response.body)
+        assert json_response.is_a?(Array)
+        assert json_response.empty?
+    end
+    
+    test "should return error for index_by_date_range with missing parameters" do
+        get filter_by_date_range_finance_transactions_url, params: { start_date: (Date.today - 7.days).strftime('%Y-%m-%d') }
+    
+        assert_response :bad_request
+    
+        json_response = JSON.parse(response.body)
+        assert_includes json_response.keys, "error"
+        assert_equal "Missing required parameters: start_date, end_date", json_response["error"]
+    end
+    
+    test "should return error for index_by_date_range with invalid date format" do
+        start_date = "invalid_date"
+        end_date = Date.today.strftime('%Y-%m-%d')
+    
+        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date }
+    
+        assert_response :bad_request
+    
+        json_response = JSON.parse(response.body)
+        assert_includes json_response.keys, "error"
+        assert_equal "Invalid date format", json_response["error"]
     end
 end
