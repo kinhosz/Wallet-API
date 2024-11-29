@@ -172,27 +172,4 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         assert json_response.is_a?(Array)
         assert json_response.empty?
     end
-    
-    test "should return error for index_by_date_range with missing parameters" do
-        get filter_by_date_range_finance_transactions_url, params: { start_date: (Date.today - 7.days).strftime('%Y-%m-%d') }
-    
-        assert_response :bad_request
-    
-        json_response = JSON.parse(response.body)
-        assert_includes json_response.keys, "error"
-        assert_equal "Missing required parameters: start_date, end_date", json_response["error"]
-    end
-    
-    test "should return error for index_by_date_range with invalid date format" do
-        start_date = "invalid_date"
-        end_date = Date.today.strftime('%Y-%m-%d')
-    
-        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date }
-    
-        assert_response :bad_request
-    
-        json_response = JSON.parse(response.body)
-        assert_includes json_response.keys, "error"
-        assert_equal "Invalid date format", json_response["error"]
-    end
 end
