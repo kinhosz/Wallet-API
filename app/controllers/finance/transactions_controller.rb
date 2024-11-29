@@ -45,21 +45,14 @@ class Finance::TransactionsController < ApplicationController
   end
 
   def index_by_date_range
-    if date_range_params[:start_date].blank? || date_range_params[:end_date].blank?
-      return render json: { error: "Missing required parameters: start_date, end_date" }, status: :bad_request
-    end
-  
-    begin
-      start_date = Date.parse(date_range_params[:start_date])
-      end_date = Date.parse(date_range_params[:end_date])
-    rescue ArgumentError
-      return render json: { error: "Invalid date format" }, status: :bad_request
-    end
-  
+    date_range = date_range_params
     transactions = Finance::Transaction.where(user_id: current_user.id)
-                                        .where(occurred_at: start_date..end_date)
-  
-    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
+                                       .where(occurred_at: date_range[:start_date]..date_range[:end_date])
+    if params[:currency].present?
+      transactions = transactions.where(currency: params[:currency])
+    end
+    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data]
+                                               .map { |transaction| transaction[:attributes] }
   end
 
   private
@@ -69,7 +62,12 @@ class Finance::TransactionsController < ApplicationController
   end
 
   def date_range_params
-    params.permit(:start_date, :end_date)
+    {
+      start_date: Date.parse(params.require(:start_date)),
+      end_date: Date.parse(params.require(:end_date))
+    }
+  rescue ArgumentError
+    raise ActionController::ParameterMissing, "Invalid date format"
   end
 
   def transaction_params
