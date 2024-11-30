@@ -119,10 +119,10 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
     # GET #index_by_date
     # ------------------------------
 
-    test "should get index_by_date with specific date" do
+    test "should get index_by_date with specific date and currency" do
         specific_date = Date.today.strftime('%Y-%m-%d')
 
-        get filter_by_date_finance_transactions_url, params: { date: specific_date }
+        get filter_by_date_finance_transactions_url, params: { date: specific_date, currency: "BRL" }
 
         assert_response :success
 
@@ -130,7 +130,8 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         assert json_response.is_a?(Array)
 
         json_response.each do |transaction|
-            assert_equal specific_date, transaction['occurred_at']
+        assert_equal specific_date, transaction['occurred_at']
+        assert_equal "BRL", transaction['currency']
         end
     end
 
@@ -138,11 +139,11 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
     # GET #index_by_date_range
     # ------------------------------
 
-    test "should get index_by_date_range with valid start_date and end_date" do
+    test "should get index_by_date_range with valid start_date and end_date, and currency" do
         start_date = (Date.today - 7.days).strftime('%Y-%m-%d')
         end_date = Date.today.strftime('%Y-%m-%d')
 
-        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date }
+        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date, currency: "BRL" }
 
         assert_response :success
 
@@ -153,6 +154,7 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
             occurred_at = Date.parse(transaction['occurred_at'])
             assert occurred_at >= Date.parse(start_date)
             assert occurred_at <= Date.parse(end_date)
+            assert_equal "BRL", transaction['currency']
         end
 
         assert_includes json_response.map { |t| t['description'] }, @transaction_record.description
@@ -164,7 +166,7 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         start_date = (Date.today - 20.days).strftime('%Y-%m-%d')
         end_date = (Date.today - 15.days).strftime('%Y-%m-%d')
     
-        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date }
+        get filter_by_date_range_finance_transactions_url, params: { start_date: start_date, end_date: end_date, currency: "BRL" }
     
         assert_response :success
     
