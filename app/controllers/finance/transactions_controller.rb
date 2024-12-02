@@ -34,57 +34,56 @@ class Finance::TransactionsController < ApplicationController
 
   def index
     transactions = Finance::Transaction.where(user_id: current_user.id)
-    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
+    render json: Finance::TransactionSerializer.new(
+                  transactions
+                ).serializable_hash[:data].map{
+                  |transaction| transaction[:attributes]
+                }
   end
 
   def index_by_date
     date = index_by_date_params[:date]
-    transactions = current_user.finance_transactions(
-      index_by_date_params[:currency]
-    ).where(
-      occurred_at: index_by_date_params[:date]
-    )
-
-    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data].map { |transaction| transaction[:attributes] }
+    transactions = Finance::Transaction.where(
+      user_id: current_user.id,
+      currency: index_by_date_params[:currency],
+      occurred_at: date
+      )
+    render json: Finance::TransactionSerializer.new(
+                  transactions
+                ).serializable_hash[:data].map{
+                  |transaction| transaction[:attributes]
+                }
   end
 
   def index_by_date_range
-    transactions = current_user.finance_transactions(
-      date_range_params[:currency]
-    ).where(
+    transactions = Finance::Transaction.where(
+      user_id: current_user.id,
+      currency: date_range_params[:currency],
       occurred_at: date_range_params[:start_date]..date_range_params[:end_date]
     )
-
-    render json: Finance::TransactionSerializer.new(transactions).serializable_hash[:data]
-                                               .map { |transaction| transaction[:attributes] }
+    render json: Finance::TransactionSerializer.new(
+                  transactions
+                ).serializable_hash[:data].map{
+                  |transaction| transaction[:attributes]
+                }
   end
 
   private
 
   def index_by_date_params
-    params.permit(:date)
     params.require(:currency)
-
-    {
-      date: params[:date],
-      currency: params[:currency]
-    }
+    params.require(:date)
+    params.permit(:currency, :date)
   end
-
+  
   def date_range_params
+    params.require(:currency)
     params.require(:start_date)
     params.require(:end_date)
-    params.require(:currency)
-
-    {
-      start_date: params[:start_date],
-      end_date: params[:end_date],
-      currency: params[:currency]
-    }
+    params.permit(:currency, :start_date, :end_date)
   end
 
   def transaction_params
-    params.require(:transaction).permit(
-      :occurred_at, :description, :value, :category, :currency)
+    params.require(:transaction).permit(:occurred_at, :description, :value, :category, :currency)
   end
 end
