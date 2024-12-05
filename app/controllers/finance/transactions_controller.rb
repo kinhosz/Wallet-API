@@ -3,12 +3,11 @@ class Finance::TransactionsController < ApplicationController
   respond_to :json
 
   def create
-    transaction = Finance::Transaction.new(
+    transaction = current_user.finance_transactions.new(
       occurred_at: transaction_params[:occurred_at],
       description: transaction_params[:description],
       value: transaction_params[:value],
-      currency: transaction_params[:currency],
-      user_id: current_user.id
+      currency: transaction_params[:currency]
     )
 
     category = current_user.finance_categories.find_by(
@@ -33,39 +32,32 @@ class Finance::TransactionsController < ApplicationController
   end
 
   def index
-    transactions = Finance::Transaction.where(user_id: current_user.id)
+    transactions = current_user.finance_transactions
     render json: Finance::TransactionSerializer.new(
                   transactions
-                ).serializable_hash[:data].map{
-                  |transaction| transaction[:attributes]
-                }
+                ).serializable_hash[:data].map { |transaction| transaction[:attributes] }
   end
 
   def index_by_date
-    date = index_by_date_params[:date]
-    transactions = Finance::Transaction.where(
-      user_id: current_user.id,
-      currency: index_by_date_params[:currency],
-      occurred_at: date
-      )
+    transactions = current_user.finance_transactions
+                               .where(
+                                 currency: index_by_date_params[:currency],
+                                 occurred_at: index_by_date_params[:date]
+                               )
     render json: Finance::TransactionSerializer.new(
                   transactions
-                ).serializable_hash[:data].map{
-                  |transaction| transaction[:attributes]
-                }
+                ).serializable_hash[:data].map { |transaction| transaction[:attributes] }
   end
 
   def index_by_date_range
-    transactions = Finance::Transaction.where(
-      user_id: current_user.id,
-      currency: date_range_params[:currency],
-      occurred_at: date_range_params[:start_date]..date_range_params[:end_date]
-    )
+    transactions = current_user.finance_transactions
+                               .where(
+                                 currency: date_range_params[:currency],
+                                 occurred_at: date_range_params[:start_date]..date_range_params[:end_date]
+                               )
     render json: Finance::TransactionSerializer.new(
                   transactions
-                ).serializable_hash[:data].map{
-                  |transaction| transaction[:attributes]
-                }
+                ).serializable_hash[:data].map { |transaction| transaction[:attributes] }
   end
 
   private
