@@ -16,4 +16,12 @@ class User < ApplicationRecord
       super()
     end
   end
+
+  def finance_transactions(currency=nil)
+    if currency.present?
+      super().by_currency(currency)
+    else
+      super()
+    end
+  end
 end

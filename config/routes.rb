@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index, :create] do
       collection do
         get 'filter_by_date', to: 'transactions#index_by_date'
+        get 'filter_by_date_range', to: 'transactions#index_by_date_range'
       end
     end
   end
