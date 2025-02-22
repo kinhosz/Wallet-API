@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   namespace :finance do
     resources :planning_lines
-    resources :plannings, only: [:create] do
+    resources :plannings, only: [:create, :index] do
       collection do
         get 'current'
       end

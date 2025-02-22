@@ -48,7 +48,8 @@ categories = Finance::Category.create!([
 ])
 
 plannings = Finance::Planning.create!([
-  { currency: 'BRL', date_start: Date.today - 1.month, user_id: admin.id }
+  { currency: 'BRL', date_start: Date.today - 1.month, user_id: admin.id },
+  { currency: 'BRL', date_start: Date.today - 2.month, date_end: Date.today - 1.month - 1.days, user_id: admin.id },
 ])
 
 Finance::PlanningLine.create!([
@@ -58,6 +59,10 @@ Finance::PlanningLine.create!([
   { value: -300, finance_planning_id: plannings[0].id, finance_category_id: categories[3].id },
   { value: -250, finance_planning_id: plannings[0].id, finance_category_id: categories[4].id },
   { value: -180, finance_planning_id: plannings[0].id, finance_category_id: categories[5].id },
+  { value: 1000, finance_planning_id: plannings[1].id, finance_category_id: categories[0].id },
+  { value: 300, finance_planning_id: plannings[1].id, finance_category_id: categories[1].id },
+  { value: -200, finance_planning_id: plannings[1].id, finance_category_id: categories[2].id },
+  { value: -100, finance_planning_id: plannings[1].id, finance_category_id: categories[3].id },
 ])
 
 Finance::Transaction.create!([

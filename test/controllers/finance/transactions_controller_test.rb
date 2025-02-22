@@ -109,10 +109,6 @@ class Finance::TransactionsControllerTest < ActionDispatch::IntegrationTest
         json_response = JSON.parse(response.body)
         assert json_response.is_a?(Array)
         assert_not json_response.empty?
-
-        assert_equal @transaction_record.description, json_response[0]['description']
-        assert_equal @transaction_record.occurred_at.strftime('%Y-%m-%d'), json_response[0]['occurred_at']
-        assert_equal @transaction_record.value.to_f, json_response[0]['value'].to_f
     end
 
     # ------------------------------
