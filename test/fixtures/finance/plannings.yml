@@ -1,22 +1,26 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 current_brl:
+  uuid: d9d2885b-99b7-4a1d-8220-fba005117cd3
   currency: "BRL"
   date_start: "01-08-2024"
   user: admin
 
 previous_brl:
+  uuid: cfb6721b-363c-4c80-a180-27134816d926
   currency: "BRL"
   date_start: "01-07-2024"
   date_end: "31-07-2024"
   user: admin
 
 current_usd:
+  uuid: 011e1254-cd2a-42b9-8811-15f4b736ade8
   currency: "USD"
   date_start: "01-08-2024"
   user: admin
 
 previous_usd:
+  uuid: 29cf5fbf-29db-490d-90d2-aa36f968a90a
   currency: "USD"
   date_start: "01-07-2024"
   date_end: "31-07-2024"

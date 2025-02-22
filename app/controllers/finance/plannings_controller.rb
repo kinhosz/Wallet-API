@@ -1,6 +1,6 @@
 class Finance::PlanningsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_currency_present, only: [:current]
+  before_action :ensure_currency_present, only: [:current, :index]
   respond_to :json
 
   def create
@@ -46,6 +46,23 @@ class Finance::PlanningsController < ApplicationController
     balance = BalanceResume.new(categories, planning.date_start, planning.date_end, params[:currency]).get
     computed = PlanningCalculator.new(planning).compute
     render json: computed.merge(balance)
+  end
+
+  def index
+    plannings = current_user.finance_plannings(params[:currency])
+    response = { plannings: [] }
+    plannings.each do |planning|
+      response[:plannings] << {
+        uuid: planning.uuid,
+        start_date: planning.date_start,
+        end_date: planning.date_end ? planning.date_end : 'current',
+        balance: TransactionsByRange.new(
+          current_user, planning.currency, planning.date_start, planning.date_end
+        ).get_total_amount
+      }
+    end
+
+    render json: response
   end
 
   def upsert_line

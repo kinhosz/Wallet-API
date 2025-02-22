@@ -95,6 +95,44 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # ------------------------------
+  # GET #index
+  # ------------------------------
+  test "index should not get plannings when not logged in" do
+    sign_out :user
+    get finance_plannings_path, params: { planning: { currency: "BRL" } }
+    assert_response :unauthorized
+  end
+
+  test "index should return a bad request for missing currency" do
+    get finance_plannings_path
+    assert_response :bad_request
+    json_response = JSON.parse(response.body)
+    assert_equal "Currency parameter is required", json_response["error"]
+  end
+
+  test "should return plannings for a given currency" do
+    get finance_plannings_path, params: { currency: "BRL" }
+    assert_response :success
+
+    body = JSON.parse(response.body)
+    assert_equal 2, body['plannings'].length(), "There are 2 plannings for BRL"
+
+    body['plannings'].each do |planning|
+      if planning['uuid'] == finance_plannings(:current_brl).uuid
+        assert_equal finance_plannings(:current_brl).date_start.strftime('%Y-%m-%d'), planning['start_date']
+        assert_equal 'current', planning['end_date']
+        assert_equal 2327.00, planning['balance']
+      elsif planning['uuid'] == finance_plannings(:previous_brl).uuid
+        assert_equal finance_plannings(:previous_brl).date_start.strftime('%Y-%m-%d'), planning['start_date']
+        assert_equal finance_plannings(:previous_brl).date_end.strftime('%Y-%m-%d'), planning['end_date']
+        assert_equal 708.00, planning['balance']
+      else
+        assert false, "Unknown planning uuid: #{planning['uuid']}"
+      end
+    end
+  end
+
+  # ------------------------------
   # POST #upsert_line
   # ------------------------------
   test "should add a finance planning line" do

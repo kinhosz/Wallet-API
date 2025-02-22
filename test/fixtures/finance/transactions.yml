@@ -1,6 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 credit_card_brl_00:
+  user: admin
   currency: "BRL"
   description: "previous"
   occurred_at: "15-07-2024"
@@ -8,6 +9,7 @@ credit_card_brl_00:
   finance_category: credit_card
 
 credit_card_brl_01:
+  user: admin
   currency: "BRL"
   description: "current"
   occurred_at: "15-08-2024"
@@ -15,6 +17,7 @@ credit_card_brl_01:
   finance_category: credit_card
 
 school_brl_00:
+  user: admin
   currency: "BRL"
   description: "current"
   occurred_at: "15-08-2024"
@@ -22,6 +25,7 @@ school_brl_00:
   finance_category: school
 
 salary_brl_00:
+  user: admin
   currency: "BRL"
   description: "previous"
   occurred_at: "15-07-2024"
@@ -29,6 +33,7 @@ salary_brl_00:
   finance_category: salary
 
 salary_brl_01:
+  user: admin
   currency: "BRL"
   description: "current"
   occurred_at: "15-08-2024"
@@ -36,6 +41,7 @@ salary_brl_01:
   finance_category: salary
 
 payment_brl_00:
+  user: admin
   currency: "BRL"
   description: "previous"
   occurred_at: "15-07-2024"
@@ -43,6 +49,7 @@ payment_brl_00:
   finance_category: payment
 
 payment_brl_01:
+  user: admin
   currency: "BRL"
   description: "current"
   occurred_at: "15-08-2024"
@@ -50,6 +57,7 @@ payment_brl_01:
   finance_category: payment
 
 health_brl_00:
+  user: admin
   currency: "BRL"
   description: "previous"
   occurred_at: "15-07-2024"
@@ -57,6 +65,7 @@ health_brl_00:
   finance_category: health
 
 credit_card_usd_00:
+  user: admin
   currency: "USD"
   description: "previous"
   occurred_at: "15-07-2024"
@@ -64,6 +73,7 @@ credit_card_usd_00:
   finance_category: credit_card
 
 credit_card_usd_01:
+  user: admin
   currency: "USD"
   description: "current"
   occurred_at: "15-08-2024"
