@@ -39,13 +39,37 @@ class Finance::PlanningsController < ApplicationController
     end
   end
 
-  def current
-    planning = current_user.finance_plannings(params[:currency]).last
-    categories = current_user.finance_categories
+  def show
+    if params[:id] == "current"
+      planning = current_user.finance_plannings(params[:currency]).last
+    else
+      planning = current_user.finance_plannings.find_by(uuid: params[:id])
+    end
 
-    balance = BalanceResume.new(categories, planning.date_start, planning.date_end, params[:currency]).get
-    computed = PlanningCalculator.new(planning).compute
-    render json: computed.merge(balance)
+    if planning
+      categories = current_user.finance_categories
+      balance = BalanceResume.new(categories, planning.date_start, planning.date_end, planning.currency).get
+      computed = PlanningCalculator.new(planning).compute
+      render json: computed.merge(balance)
+    # else retorna 404
+    end
+  end
+
+  def index
+    plannings = current_user.finance_plannings(params[:currency])
+    response = { plannings: [] }
+    plannings.each do |planning|
+      response[:plannings] << {
+        uuid: planning.uuid,
+        start_date: planning.date_start,
+        end_date: planning.date_end ? planning.date_end : 'current',
+        balance: TransactionsByRange.new(
+          current_user, planning.currency, planning.date_start, planning.date_end
+        ).get_total_amount
+      }
+    end
+
+    render json: response
   end
 
   def index
