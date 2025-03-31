@@ -1,6 +1,6 @@
 class Finance::PlanningsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_currency_present, only: [:current, :index]
+  before_action :ensure_currency_present, only: [:index, :show]
   respond_to :json
 
   def create
@@ -39,13 +39,21 @@ class Finance::PlanningsController < ApplicationController
     end
   end
 
-  def current
-    planning = current_user.finance_plannings(params[:currency]).last
-    categories = current_user.finance_categories
+  def show
+    if params[:id] == "current"
+      planning = current_user.finance_plannings(params[:currency]).last
+    else
+      planning = current_user.finance_plannings.find_by(uuid: params[:id])
+    end
 
-    balance = BalanceResume.new(categories, planning.date_start, planning.date_end, params[:currency]).get
-    computed = PlanningCalculator.new(planning).compute
-    render json: computed.merge(balance)
+    if planning
+      categories = current_user.finance_categories
+      balance = BalanceResume.new(categories, planning.date_start, planning.date_end, planning.currency).get
+      computed = PlanningCalculator.new(planning).compute
+      render json: computed.merge(balance)
+    else 
+      render status: :not_found
+    end
   end
 
   def index

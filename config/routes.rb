@@ -13,17 +13,16 @@ Rails.application.routes.draw do
 
   namespace :finance do
     resources :planning_lines
-    resources :plannings, only: [:create, :index] do
-      collection do
-        get 'current'
-      end
+    resources :plannings, only: [:create, :index, :show] do
       post 'upsert_line', on: :member
     end
+     
     resources :categories, only: [:index] do
       collection do
         post 'upsert'
       end
     end
+    
     resources :transactions, only: [:index, :create] do
       collection do
         get 'filter_by_date', to: 'transactions#index_by_date'
