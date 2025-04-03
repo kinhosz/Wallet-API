@@ -23,12 +23,10 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
         date_start: "24-03-2024",
         date_end: "24-04-2024",
         lines: [
-          value: 200.00,
-          category: finance_categories(:credit_card).uuid
+          { value: 200.00, category: finance_categories(:credit_card).uuid }
         ]
       }
     }
-
     assert_response :unauthorized
   end
 
@@ -41,10 +39,7 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
           date_start: "24-03-2024",
           date_end: "24-04-2024",
           lines: [
-            {
-              value: 200.00,
-              category: finance_categories(:credit_card).uuid
-            }
+            { value: 200.00, category: finance_categories(:credit_card).uuid }
           ]
         }
       }
@@ -54,27 +49,35 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # ------------------------------
-  # GET #current
+  # GET #show
   # ------------------------------
-  test "should not get the current planning when not logged in" do
+  test "should not get the planning when not logged in" do
     sign_out :user
-    get current_finance_plannings_path, params: { planning: { currency: "BRL" } }
+    uuid = finance_plannings(:current_brl).uuid
+    get finance_planning_path(uuid)
     assert_response :unauthorized
   end
 
   test "should return a bad request for missing currency" do
-    get current_finance_plannings_path
+    get finance_planning_path(finance_plannings(:current_brl).uuid)
     assert_response :bad_request
     json_response = JSON.parse(response.body)
     assert_equal "Currency parameter is required", json_response["error"]
   end
 
-  test "should get the current planning for BRL" do
-    get current_finance_plannings_path, params: { currency: "BRL" }
+  test "should get the last open planning for BRL when using current" do
+    last_open_planning = finance_plannings(:current_brl)
+    get finance_planning_path("current"), params: {currency: "BRL"}
+    assert_response :success
+    assert_equal last_open_planning.uuid, response.parsed_body["uuid"]
+  end
+
+  test "should get the planning for BRL with valid UUID" do
+    uuid = finance_plannings(:current_brl).uuid
+    get finance_planning_path(uuid), params: { currency: "BRL" }
     assert_response :success
 
     body = JSON.parse(response.body)
-
     assert_equal 708.00, body["initial_balance"], "initial balance"
     assert_equal 2327.00, body["monthly_balance"], "monthly balance"
 
@@ -99,7 +102,7 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
   # ------------------------------
   test "index should not get plannings when not logged in" do
     sign_out :user
-    get finance_plannings_path, params: { planning: { currency: "BRL" } }
+    get finance_plannings_path, params: { currency: "BRL" }
     assert_response :unauthorized
   end
 
@@ -146,7 +149,6 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
           }
         }
     end
-  
     assert_response :created
   end
 
@@ -161,7 +163,6 @@ class Finance::PlanningsControllerTest < ActionDispatch::IntegrationTest
           }
         }
     end
-  
     assert_response :success
   end
 end
